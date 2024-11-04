@@ -5,7 +5,8 @@ import { paths } from 'src/routes/paths';
 
 // export const HOST_API = process.env.NEXT_PUBLIC_HOST_API;
 
-export const HOST_API = "http://127.0.0.1:8000/";
+// export const HOST_API = "http://127.0.0.1:8000/";
+export const HOST_API = "https://9824-154-59-205-29.ngrok-free.app";
 // export const ASSETS_API = process.env.NEXT_PUBLIC_ASSETS_API;
 export const ASSETS_API = "http://localhost:3032";
 

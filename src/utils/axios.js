@@ -58,7 +58,7 @@ import { HOST_API } from 'src/config-global';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ 
+const axiosInstance = axios.create({
   baseURL: HOST_API,
   headers: {
     'Content-Type': 'application/json',
@@ -157,6 +157,7 @@ export const endpoints = {
     details: '/api/product/details',
     search: '/api/product/search',
   },
+  quickPortfoli: '/api/quick-portfolio/'
 };
 
 // Optional: Add custom request helpers
@@ -174,7 +175,7 @@ export const uploadFile = async (url, file, onUploadProgress) => {
 
 export const multipartRequest = async (url, data, method = 'POST') => {
   const formData = new FormData();
-  
+
   Object.keys(data).forEach(key => {
     if (data[key] instanceof File) {
       formData.append(key, data[key]);
