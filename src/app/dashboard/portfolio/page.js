@@ -6,6 +6,6 @@ export const metadata = {
   title: 'Dashboard: Portfolio',
 };
 
-export default function BlankPage() {
+export default function PortfoliokPage() {
   return <PortfolioView />;
 }

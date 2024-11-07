@@ -113,12 +113,12 @@ export default function PortfolioTableToolbar({
           },
         }}
       >
-        {options.map((option) => (
+        {/* {options.map((option) => (
           <MenuItem key={option} value={option}>
             <Checkbox disableRipple size="small" checked={checked.includes(option)} />
             {option}
           </MenuItem>
-        ))}
+        ))} */}
       </Select>
     </FormControl>
   );

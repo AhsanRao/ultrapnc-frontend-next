@@ -1,21 +1,24 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Card from '@mui/material/Card';
+import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
-import { alpha } from '@mui/material/styles';
 
+import { paths } from 'src/routes/paths';
+
+import axios, { endpoints } from 'src/utils/axios';
+
+import Upload from 'src/components/upload/upload';
 import { useSnackbar } from 'src/components/snackbar';
 import { useSettingsContext } from 'src/components/settings';
-import Upload from 'src/components/upload/upload';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import axios, { endpoints } from 'src/utils/axios';
-import { paths } from 'src/routes/paths';
 
 import ContactMap from './portfolio-map';
 import PortfolioTable from './portfolio-table';
@@ -30,14 +33,14 @@ const parseCSV = (text) => {
   // Normalize line endings
   const normalizedText = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   
-  for (let i = 0; i < normalizedText.length; i++) {
+  for (let i = 0; i < normalizedText.length; i+=1) {
     const char = normalizedText[i];
     const nextChar = normalizedText[i + 1];
 
     if (char === '"') {
       if (inQuotes && nextChar === '"') {
         currentField += '"';
-        i++;
+        i+=1;
       } else {
         inQuotes = !inQuotes;
       }
@@ -66,7 +69,7 @@ const parseCSV = (text) => {
   return result;
 };
 
-export default function PortfolioView() {
+export default function HistoryView() {
   const settings = useSettingsContext();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -76,22 +79,7 @@ export default function PortfolioView() {
   const [loading, setLoading] = useState(false);
   const [mapContacts, setMapContacts] = useState([]);
 
-  const handleDropMultiFile = useCallback(
-    (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      if (file?.type !== 'text/csv') {
-        enqueueSnackbar('Please upload a CSV file', { variant: 'error' });
-        return;
-      }
 
-      setFiles([...files, ...acceptedFiles.map((newFile) =>
-        Object.assign(newFile, {
-          preview: URL.createObjectURL(newFile),
-        })
-      )]);
-    },
-    [files, enqueueSnackbar]
-  );
 
   const handleUpload = async () => {
     if (!files.length) {
@@ -197,16 +185,7 @@ export default function PortfolioView() {
     reader.readAsText(file);
   };
 
-  const handleRemoveFile = (inputFile) => {
-    const filesFiltered = files.filter((fileFiltered) => fileFiltered !== inputFile);
-    setFiles(filesFiltered);
-  };
 
-  const handleRemoveAllFiles = () => {
-    setFiles([]);
-    setTableData([]);
-    setMapContacts([]);
-  };
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -218,25 +197,6 @@ export default function PortfolioView() {
         }}
       />
 
-      <Card sx={{ mb: 5 }}>
-        <CardContent>
-          <Upload
-            multiple
-            accept=".csv"
-            files={files}
-            onDrop={handleDropMultiFile}
-            onRemove={handleRemoveFile}
-            onRemoveAll={handleRemoveAllFiles}
-            onUpload={handleUpload}
-          />
-        </CardContent>
-      </Card>
-
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-          <CircularProgress />
-        </Box>
-      ) : (
         <Card>
           <Box sx={{ display: 'flex', justifyContent: 'center', px: 3, py: 3 }}>
             <Tabs
@@ -273,7 +233,7 @@ export default function PortfolioView() {
             </>
           )}
         </Card>
-      )}
+      
     </Container>
   );
 }

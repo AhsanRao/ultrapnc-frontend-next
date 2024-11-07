@@ -75,6 +75,7 @@ export const paths = {
     // chat: `${ROOTS.DASHBOARD}/chat`,
     blank: `${ROOTS.DASHBOARD}/blank`,
     portfolio: `${ROOTS.DASHBOARD}/portfolio`,
+    history: `${ROOTS.DASHBOARD}/history`,
     // kanban: `${ROOTS.DASHBOARD}/kanban`,
     // calendar: `${ROOTS.DASHBOARD}/calendar`,
     // fileManager: `${ROOTS.DASHBOARD}/file-manager`,

@@ -93,7 +93,12 @@ export function useNavData() {
             path: paths.dashboard.portfolio,
             icon: ICONS.analytics,
           },
-
+          // Portfolio History
+          {
+            title: t('portfolio history'),
+            path: paths.dashboard.history,
+            icon: ICONS.calendar,
+          },
           // USER
           {
             title: t('profile'),
