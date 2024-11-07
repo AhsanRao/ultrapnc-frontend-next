@@ -113,25 +113,24 @@ export default function PortfolioTableToolbar({
           },
         }}
       >
-        {/* {options.map((option) => (
+        {options.map((option) => (
           <MenuItem key={option} value={option}>
             <Checkbox disableRipple size="small" checked={checked.includes(option)} />
             {option}
           </MenuItem>
-        ))} */}
+        ))}
       </Select>
     </FormControl>
   );
 
   return (
     <Box sx={{ p: 2.5 }}>
-      
       <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2.5 }}>
         <TextField
           fullWidth
           value={filters.name}
           onChange={handleFilterName}
-          placeholder="Search..."
+          placeholder="Search locations..."
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -145,12 +144,12 @@ export default function PortfolioTableToolbar({
           <Iconify icon="eva:more-vertical-fill" />
         </IconButton>
       </Stack>
-      {/* First row - Basic filters */}
+
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         alignItems="center"
         spacing={2}
-
+        sx={{ mb: 2.5 }}
       >
         {renderFilterControl(
           'Res/Comm',
@@ -159,13 +158,6 @@ export default function PortfolioTableToolbar({
           resCommOptions,
           filters.resComm
         )}
-        {/* {renderFilterControl(
-          'Construction Type',
-          filters.constructionType,
-          handleFilterConstructionType,
-          constructionTypeOptions,
-          filters.constructionType
-        )} */}
         {renderFilterControl(
           'Flood Risk',
           filters.floodRisk,
@@ -173,8 +165,6 @@ export default function PortfolioTableToolbar({
           riskLevelOptions,
           filters.floodRisk
         )}
-        
-      
         {renderFilterControl(
           'Drought Condition',
           filters.droughtCondition,
@@ -182,60 +172,71 @@ export default function PortfolioTableToolbar({
           riskLevelOptions,
           filters.droughtCondition
         )}
+      </Stack>
+
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        alignItems="center"
+        spacing={2}
+      >
         {renderFilterControl(
           'Wildfire Status',
           filters.wildfireStatus,
           handleFilterWildfireStatus,
           wildfireStatusOptions,
-          filters.wildfireStatus
-        )}
-        {renderFilterControl(
-          'Earthquake Alert',
-          filters.earthquakeAlert,
-          handleFilterEarthquakeAlert,
-          riskLevelOptions,
-          filters.earthquakeAlert
-        )}
-      </Stack>
-
-      {/* Third row - Search bar */}
-      
-
-      <CustomPopover
-        open={popover.open}
-        onClose={popover.onClose}
-        arrow="right-top"
-        sx={{ width: 140 }}
-      >
-        <MenuItem
-          onClick={() => {
-            console.log('Print');
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:printer-minimalistic-bold" />
-          Print
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            console.log('Export');
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="solar:export-bold" />
-          Export
-        </MenuItem>
-      </CustomPopover>
-    </Box>
-  );
-}
-
-PortfolioTableToolbar.propTypes = {
-  filters: PropTypes.object,
-  onFilters: PropTypes.func,
-  resCommOptions: PropTypes.array,
-  constructionTypeOptions: PropTypes.array,
-  riskLevelOptions: PropTypes.array,
-  wildfireStatusOptions: PropTypes.array,
-};
+                    filters.wildfireStatus
+                  )}
+                  {renderFilterControl(
+                    'Earthquake Alert',
+                    filters.earthquakeAlert,
+                    handleFilterEarthquakeAlert,
+                    riskLevelOptions,
+                    filters.earthquakeAlert
+                  )}
+                  {renderFilterControl(
+                    'Construction Type',
+                    filters.constructionType,
+                    handleFilterConstructionType,
+                    constructionTypeOptions,
+                    filters.constructionType
+                  )}
+                </Stack>
+          
+                <CustomPopover
+                  open={popover.open}
+                  onClose={popover.onClose}
+                  arrow="right-top"
+                  sx={{ width: 140 }}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      console.log('Print');
+                      popover.onClose();
+                    }}
+                  >
+                    <Iconify icon="solar:printer-minimalistic-bold" />
+                    Print
+                  </MenuItem>
+          
+                  <MenuItem
+                    onClick={() => {
+                      console.log('Export');
+                      popover.onClose();
+                    }}
+                  >
+                    <Iconify icon="solar:export-bold" />
+                    Export
+                  </MenuItem>
+                </CustomPopover>
+              </Box>
+            );
+          }
+          
+          PortfolioTableToolbar.propTypes = {
+            filters: PropTypes.object,
+            onFilters: PropTypes.func,
+            resCommOptions: PropTypes.array,
+            constructionTypeOptions: PropTypes.array,
+            riskLevelOptions: PropTypes.array,
+            wildfireStatusOptions: PropTypes.array,
+          };

@@ -157,7 +157,10 @@ export const endpoints = {
     details: '/api/product/details',
     search: '/api/product/search',
   },
-  quickPortfolio: '/api/quick-portfolio/'
+  quickPortfolio: '/api/quick-portfolio/',
+  portfolio: {
+  list: '/api/portfolios/',
+},
 };
 
 // Optional: Add custom request helpers
