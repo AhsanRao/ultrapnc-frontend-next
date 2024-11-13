@@ -21,7 +21,11 @@ import AppCurrentDownload from '../app-current-download';
 // ----------------------------------------------------------------------
 
 export default function OverviewAppView() {
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
+  const user = localStorage && localStorage.getItem('user') 
+  ? JSON.parse(localStorage.getItem('user')) 
+  : null;
+
 
   const theme = useTheme();
 

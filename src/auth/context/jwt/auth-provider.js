@@ -285,6 +285,7 @@ export function AuthProvider({ children }) {
       password,
     });
     const { accessToken, user } = response.data;
+    localStorage.setItem('user', JSON.stringify(user))
     setSession(accessToken);
     dispatch({
       type: 'LOGIN',
@@ -303,6 +304,7 @@ export function AuthProvider({ children }) {
     const response = await axios.post(endpoints.auth.register, data);
     const { accessToken, user } = response.data;
     sessionStorage.setItem(STORAGE_KEY, accessToken);
+    localStorage.setItem('user', JSON.stringify(user))
     dispatch({
       type: 'REGISTER',
       payload: {
@@ -348,6 +350,7 @@ export function AuthProvider({ children }) {
     }
     setSession(null);
     sessionStorage.removeItem(REFRESH_KEY);
+    localStorage.removeItem('user')
     dispatch({
       type: 'LOGOUT',
     });

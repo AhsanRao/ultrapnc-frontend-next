@@ -14,7 +14,12 @@ import { useAuthContext } from 'src/auth/hooks';
 // ----------------------------------------------------------------------
 
 export default function NavUpgrade() {
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
+  const user = localStorage && localStorage.getItem('user') 
+  ? JSON.parse(localStorage.getItem('user')) 
+  : null;
+
+
 
   return (
     <Stack

@@ -36,9 +36,13 @@ const OPTIONS = [
 export default function AccountPopover() {
   const router = useRouter();
 
-  const { user } = useAuthContext();
-  // const { user } = useMockedUser();
+  // const { user } = useAuthContext();
+  const user = localStorage && localStorage.getItem('user') 
+  ? JSON.parse(localStorage.getItem('user')) 
+  : null;
 
+
+  // const { user } = useMockedUser();
 
   const { logout } = useAuthContext();
 
