@@ -149,7 +149,9 @@ const defaultFilters = {
   earthquakeAlert: [],
 };
 
-export default function PortfolioTable({ data, currentPortfolio, portfolios }) {
+export default function PortfolioTable({ data, currentPortfolio, portfolios
+
+ }) {
   const table = useTable();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -276,6 +278,7 @@ export default function PortfolioTable({ data, currentPortfolio, portfolios }) {
 
   // Get current visible columns configuration
   const visibleTableHead = ALL_COLUMNS.filter((column) => visibleColumns.includes(column.id));
+  const [headColumn, setHeadColumn] = useState(visibleTableHead)
 
   // Add fixed width for actions column
   visibleTableHead.push({ id: '', width: 88 });
@@ -405,16 +408,37 @@ export default function PortfolioTable({ data, currentPortfolio, portfolios }) {
     });
   };
 
+
+  const [editingLabel, setEditingLabel] = useState(null);
+  const [tempLabel, setTempLabel] = useState('');
+
+  const handleEditStart = (id, currentLabel) => {
+    console.log(currentLabel, 'currentLabel')
+    setEditingLabel(id);
+    setTempLabel(currentLabel);
+  };
+
+  const handleSave = (id) => {
+    setHeadColumn(visibleTableHead.map((headCell) =>
+      headCell.id === id ? { ...headCell, label: tempLabel } : headCell
+    )) 
+    setEditingLabel(null);
+  };
+
+  const handleCancel = () => {
+    setEditingLabel(null);
+  };
+
   return (
     <Card>
-      <PortfolioTableToolbar
+      {/* <PortfolioTableToolbar
         filters={filters}
         onFilters={handleFilters}
         resCommOptions={['Residential', 'Commercial']}
         constructionTypeOptions={['WOOD', 'MASONRY', 'STEEL', 'CONCRETE']}
         riskLevelOptions={['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']}
         wildfireStatusOptions={['INACTIVE', 'ACTIVE', 'CRITICAL']}
-      />
+      /> */}
 
       {canReset && (
         <PortfolioTableFiltersResult
@@ -425,109 +449,6 @@ export default function PortfolioTable({ data, currentPortfolio, portfolios }) {
           sx={{ p: 2.5, pt: 0 }}
         />
       )}
-
-      {/* Column Selection Button */}
-      <Box sx={{ px: 2, py: 1, display: 'flex', justifyContent: 'space-between' }}>
-        <Box sx={{ display: 'flex', gap: 2, pl: 2 }}>
-          {PARENT_COLUMN.map((parent) => (
-            <FormControlLabel
-              key={parent.id}
-              control={
-                <Checkbox
-                  checked={ALL_COLUMNS.filter((column) => column.parent === parent).every(
-                    (column) => visibleColumns.includes(column.id)
-                  )}
-                  indeterminate={
-                    ALL_COLUMNS.filter((column) => column.parent === parent).some((column) =>
-                      visibleColumns.includes(column.id)
-                    ) &&
-                    !ALL_COLUMNS.filter((column) => column.parent === parent).every((column) =>
-                      visibleColumns.includes(column.id)
-                    )
-                  }
-                  onChange={() => handleParentToggle(parent)}
-                />
-              }
-              label={
-                <Typography variant="body2" color="textSecondary" fontWeight="bold">
-                  {parent}
-                </Typography>
-              }
-            />
-          ))}
-        </Box>
-        <Button
-          color="primary"
-          startIcon={<Iconify icon="mdi:table-column" />}
-          onClick={handleColumnsMenuOpen}
-        >
-          Columns
-        </Button>
-      </Box>
-
-      {/* Columns Selection Menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleColumnsMenuClose}
-        PaperProps={{
-          sx: { maxHeight: 300, width: 250 },
-        }}
-      >
-        <MenuItem>
-          <Button
-            color="inherit"
-            onClick={handleResetColumns}
-            startIcon={<Iconify icon="mdi:refresh" />}
-          >
-            Reset to Default
-          </Button>
-        </MenuItem>
-        <Divider />
-        {PARENT_COLUMN.map((parent) => (
-          <Box key={parent} sx={{ ml: 2 }}>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={ALL_COLUMNS.filter((column) => column.parent === parent).every(
-                    (column) => visibleColumns.includes(column.id)
-                  )}
-                  indeterminate={
-                    ALL_COLUMNS.filter((column) => column.parent === parent).some((column) =>
-                      visibleColumns.includes(column.id)
-                    ) &&
-                    !ALL_COLUMNS.filter((column) => column.parent === parent).every((column) =>
-                      visibleColumns.includes(column.id)
-                    )
-                  }
-                  onChange={() => handleParentToggle(parent)}
-                />
-              }
-              label={
-                <Typography variant="body2" color="textSecondary" fontWeight="bold">
-                  {parent}
-                </Typography>
-              }
-            />
-            <Box sx={{ p: 2 }}>
-              <FormGroup>
-                {ALL_COLUMNS.filter((column) => column.parent === parent).map((column) => (
-                  <FormControlLabel
-                    key={column.id}
-                    control={
-                      <Checkbox
-                        checked={visibleColumns.includes(column.id)}
-                        onChange={() => handleColumnToggle(column.id)}
-                      />
-                    }
-                    label={column.label}
-                  />
-                ))}
-              </FormGroup>
-            </Box>
-          </Box>
-        ))}
-      </Menu>
 
       <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
         <Scrollbar>
@@ -553,7 +474,7 @@ export default function PortfolioTable({ data, currentPortfolio, portfolios }) {
             <TableHeadCustom
               order={table.order}
               orderBy={table.orderBy}
-              headLabel={visibleTableHead}
+              headLabel={headColumn}
               rowCount={tableData.length}
               numSelected={table.selected.length}
               onSort={table.onSort}
@@ -563,6 +484,12 @@ export default function PortfolioTable({ data, currentPortfolio, portfolios }) {
                   tableData.map((row) => row.id)
                 )
               }
+              editingLabel = {editingLabel}
+              handleEditStart = {handleEditStart}
+              handleSave ={handleSave}
+              tempLabel = {tempLabel}
+              setTempLabel = {setTempLabel}
+              handleCancel = {handleCancel}
             />
 
             <TableBody>

@@ -105,6 +105,12 @@ export function useNavData() {
             path: paths.dashboard.user.root,
             icon: ICONS.user,
           },
+          // Coverage Summary
+          {
+            title: t('Coverage Summary'),
+            path: paths.dashboard.summary,
+            icon: ICONS.analytics,
+          },
           { title: t('list'), path: paths.dashboard.user.list },
 
 

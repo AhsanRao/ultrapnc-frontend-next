@@ -1,12 +1,17 @@
 import PropTypes from 'prop-types';
-
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
-
+import {
+  TextField,
+  IconButton,
+} from '@mui/material';
+import { Edit, Check, Close } from '@mui/icons-material';
+import "./table.css"
 // ----------------------------------------------------------------------
 
 const visuallyHidden = {
@@ -32,49 +37,79 @@ export default function TableHeadCustom({
   onSort,
   onSelectAllRows,
   sx,
+  editingLabel,
+  handleEditStart ,
+  handleSave,
+  tempLabel,
+  setTempLabel,
+  handleCancel
 }) {
+
+ 
   return (
     <TableHead sx={sx}>
-      <TableRow>
-        {onSelectAllRows && (
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={!!numSelected && numSelected < rowCount}
-              checked={!!rowCount && numSelected === rowCount}
-              onChange={(event) => onSelectAllRows(event.target.checked)}
-            />
-          </TableCell>
-        )}
+    <TableRow>
+      {onSelectAllRows && (
+        <TableCell padding="checkbox">
+          <Checkbox
+            indeterminate={!!numSelected && numSelected < rowCount}
+            checked={!!rowCount && numSelected === rowCount}
+            onChange={(event) => onSelectAllRows(event.target.checked)}
+          />
+        </TableCell>
+      )}
 
-        {headLabel.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.align || 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
-            sx={{ width: headCell.width, minWidth: headCell.minWidth }}
-          >
-            {onSort ? (
-              <TableSortLabel
-                hideSortIcon
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : 'asc'}
-                onClick={() => onSort(headCell.id)}
+      {headLabel.map((headCell) => (
+        <TableCell
+          key={headCell.id}
+          align={headCell.align || 'left'}
+          sortDirection={orderBy === headCell.id ? order : false}
+          sx={{ width: headCell.width, minWidth: headCell.minWidth }}
+        >
+          {editingLabel === headCell.id ? (
+            <Box display="flex" alignItems="center">
+              <TextField
+                style={{width: '100px'}}
+                value={tempLabel}
+                onChange={(e) => setTempLabel(e.target.value)}
+                size="small"
+                variant="outlined"
+                sx={{ mr: 1 }}
+              />
+              <IconButton onClick={() => handleSave(headCell.id)}>
+                <Check />
+              </IconButton>
+              <IconButton onClick={handleCancel}>
+                <Close />
+              </IconButton>
+            </Box>
+          ) : (
+            <Box display="flex" alignItems="center">
+              {onSort ? (
+                <TableSortLabel
+                  hideSortIcon
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : 'asc'}
+                  onClick={() => onSort(headCell.id)}
+                >
+                  {headCell.label}
+                </TableSortLabel>
+              ) : (
+                headCell.label
+              )}
+              <IconButton
+                onClick={() => handleEditStart(headCell.id, headCell.label)}
+                sx={{ ml: 1,display: 'none', }}
+                className='showEdit'
               >
-                {headCell.label}
-
-                {orderBy === headCell.id ? (
-                  <Box sx={{ ...visuallyHidden }}>
-                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            ) : (
-              headCell.label
-            )}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
+                <Edit fontSize="small" />
+              </IconButton>
+            </Box>
+          )}
+        </TableCell>
+      ))}
+    </TableRow>
+  </TableHead>
   );
 }
 

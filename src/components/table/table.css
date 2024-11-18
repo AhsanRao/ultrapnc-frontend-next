@@ -1,0 +1,4 @@
+
+.MuiTableCell-root:hover .showEdit {
+    display: inline-flex;
+  }

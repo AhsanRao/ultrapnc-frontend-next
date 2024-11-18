@@ -76,6 +76,7 @@ export const paths = {
     blank: `${ROOTS.DASHBOARD}/blank`,
     portfolio: `${ROOTS.DASHBOARD}/portfolio`,
     history: `${ROOTS.DASHBOARD}/history`,
+    summary: `${ROOTS.DASHBOARD}/summary`,
     // kanban: `${ROOTS.DASHBOARD}/kanban`,
     // calendar: `${ROOTS.DASHBOARD}/calendar`,
     // fileManager: `${ROOTS.DASHBOARD}/file-manager`,
